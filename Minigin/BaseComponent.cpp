@@ -1,6 +1,14 @@
 #include "BaseComponent.h"
 
-BaseComponent::BaseComponent(GameObject* pOwner)
+void BaseComponent::Update()
 {
-	m_pOwner = pOwner;
 }
+
+void BaseComponent::FixedUpdate()
+{
+}
+
+void BaseComponent::Render() const
+{
+}
+

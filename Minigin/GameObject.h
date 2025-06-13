@@ -3,20 +3,21 @@
 #include "Transform.h"
 #include "BaseComponent.h"
 
+#include <iostream>
 #include <vector>
 
-namespace dae
-{
-	class Texture2D;
+
+	//class Texture2D;
+	class BaseComponent;
 
 	// todo: this should become final.
-	class GameObject
+	class GameObject final
 	{
 	public:
-		virtual void Update();
-		virtual void Render() const;
+		void Update();
+		//void FixedUpdate();
+		void Render() const;
 
-		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
 
 		GameObject() = default;
@@ -26,12 +27,35 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		void AddComponent(BaseComponent* component);
+		Transform GetTransformComponent() { return m_Transform; };
 
+		template<typename ObjectComp>
+		void AddObjectComponent()
+		{
+			static_assert(std::is_base_of<BaseComponent, ObjectComp>::value, "Argument is not derived from BaseComponent");
+			std::unique_ptr<ObjectComp> ObjectComponent = std::make_unique<ObjectComp>(this);
+			m_ObjectComponents.push_back(std::move(ObjectComponent));
+		}
+
+		template<typename ObjectComp>
+		ObjectComp* GetObjectComponent()
+		{
+			static_assert(std::is_base_of<BaseComponent, ObjectComp>::value, "Argument is not derived from BaseComponent");
+
+			for (const auto& objectComponent : m_ObjectComponents)
+			{
+				;
+				if (ObjectComp* AskedComp = dynamic_cast<ObjectComp*>(objectComponent.get()))
+				{
+					return AskedComp;
+				}
+
+			}
+			return nullptr;
+		}
+
+		//0.bool HasComponent(BaseComponent* component);
 	private:
-		Transform m_transform{};
-		// todo: mmm, every gameobject has a texture? Is that correct?
-		std::shared_ptr<Texture2D> m_texture{};
-		std::vector<BaseComponent*> m_Components;
+		Transform m_Transform{};
+		std::vector<std::unique_ptr<BaseComponent>> m_ObjectComponents;
 	};
-}

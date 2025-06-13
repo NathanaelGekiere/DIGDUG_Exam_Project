@@ -3,30 +3,39 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
-dae::GameObject::~GameObject() = default;
+GameObject::~GameObject() = default;
 
-void dae::GameObject::AddComponent(BaseComponent* component)
+//void dae::GameObject::AddComponent(std::unique_ptr<BaseComponent> component)
+//{
+//	if (component != nullptr)
+//	{
+//		m_ObjectComponents.push_back(std::move(component));
+//	}
+//}
+
+//bool dae::GameObject::HasComponent(BaseComponent* desiredComponent)
+//{
+//	for (auto& component: m_ObjectComponents)
+//		if (component == desiredComponent )
+//}
+
+void GameObject::Update()
 {
-	if (component != nullptr)
+	for (auto& objectComponent : m_ObjectComponents)
 	{
-		m_Components.push_back(component);
+		objectComponent->Render();
 	}
 }
 
-void dae::GameObject::Update(){}
-
-void dae::GameObject::Render() const
+void GameObject::Render() const
 {
-	const auto& pos = m_transform.GetPosition();
-	Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
+	for (auto& objectComponent : m_ObjectComponents)
+	{
+		objectComponent->Render();
+	}
 }
 
-void dae::GameObject::SetTexture(const std::string& filename)
+void GameObject::SetPosition(float x, float y)
 {
-	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
-}
-
-void dae::GameObject::SetPosition(float x, float y)
-{
-	m_transform.SetPosition(x, y, 0.0f);
+	m_Transform.SetPosition(x, y, 0.0f);
 }
