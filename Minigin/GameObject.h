@@ -1,6 +1,9 @@
 #pragma once
 #include <memory>
 #include "Transform.h"
+#include "BaseComponent.h"
+
+#include <vector>
 
 namespace dae
 {
@@ -23,9 +26,12 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+		void AddComponent(BaseComponent* component);
+
 	private:
 		Transform m_transform{};
 		// todo: mmm, every gameobject has a texture? Is that correct?
 		std::shared_ptr<Texture2D> m_texture{};
+		std::vector<BaseComponent*> m_Components;
 	};
 }

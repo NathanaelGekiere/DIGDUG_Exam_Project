@@ -5,6 +5,14 @@
 
 dae::GameObject::~GameObject() = default;
 
+void dae::GameObject::AddComponent(BaseComponent* component)
+{
+	if (component != nullptr)
+	{
+		m_Components.push_back(component);
+	}
+}
+
 void dae::GameObject::Update(){}
 
 void dae::GameObject::Render() const
