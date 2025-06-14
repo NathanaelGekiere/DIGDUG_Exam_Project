@@ -9,6 +9,11 @@ RenderComponent::RenderComponent(GameObject* pOwner)
 	,m_Texture{}
 {
 }
+RenderComponent::~RenderComponent()
+{
+	delete m_Texture;
+	m_Texture = nullptr;
+}
 
 void RenderComponent::AddTexture(const std::string& filePath)
 {

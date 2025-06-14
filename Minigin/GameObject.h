@@ -54,7 +54,6 @@
 			return nullptr;
 		}
 
-		//0.bool HasComponent(BaseComponent* component);
 	private:
 		Transform m_Transform{};
 		std::vector<std::unique_ptr<BaseComponent>> m_ObjectComponents;

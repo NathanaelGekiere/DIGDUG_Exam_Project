@@ -12,7 +12,7 @@ class RenderComponent final : public BaseComponent
 {
 public:
 	RenderComponent(GameObject* pOwner);
-	~RenderComponent() override = default;
+	~RenderComponent() override;
 
 	void AddTexture(const std::string& filePath);
 
